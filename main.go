@@ -6,7 +6,10 @@ import (
 	"time"
 	"log"
 	"os"
+	"database/sql"
 )
+
+var db *sql.DB
 
 func getData() {
 	for {
@@ -18,7 +21,7 @@ func getData() {
 		var info Info
 		json.NewDecoder(resp.Body).Decode(&info)
 
-		data := DBdata{info.Data.Temp[0].(float32), info.Data.Humid[0].(float32), time.Now()}
+		data := DBdata{info.Data.Temp[0].(float64), info.Data.Humid[0].(float64), time.Now()}
 		AddData(data)
 		time.Sleep(30 * time.Second)
 	}
@@ -37,7 +40,8 @@ func OpenFile() {
 func main() {
 	OpenFile()
 	//CreateMainTable()
-	InitDb()
+	db = InitDb()
+	defer db.Close()
 
 	go getData()
 

@@ -6,21 +6,18 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var db *sql.DB
-
-func InitDb() {
-	var err error
-	db, err = sql.Open("sqlite3", "data.db")
+func InitDb() *sql.DB{
+	db, err := sql.Open("sqlite3", "data.db")
 	if err != nil {
 		log.Panic(err)
 	}
 
-	defer db.Close()
+	return db
 }
 
 func AddData(data DBdata) {
 
-	res, err := db.Exec("INSERT INTO sensor_data VALUES ($1, %2, %3)", data.Temp, data.Humid, data.Time)
+	res, err := db.Exec("INSERT INTO sensor_data VALUES ($1, $2, $3)", data.Temp, data.Humid, data.Time)
 	if err != nil{
 		log.Panic(err, res)
 	}

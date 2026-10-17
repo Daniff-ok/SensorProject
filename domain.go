@@ -1,6 +1,8 @@
 package main
 
-import "time"
+import (
+	"time"
+)
 
 type Info struct {
 	Data IncomingData `json:"u"`
@@ -12,7 +14,7 @@ type IncomingData struct {
 }
 
 type DBdata struct {
-	Temp  float32   `json:"temp"`
-	Humid float32   `json:"humid"`
+	Temp  float64   `json:"temp"`
+	Humid float64   `json:"humid"`
 	Time  time.Time `json:"time"`
 }
