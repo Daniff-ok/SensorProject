@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"log"
+	"os"
 )
 
 var curretData Data
@@ -13,7 +15,7 @@ func getData() {
 	for {
 		resp, err := http.Get("http://192.168.0.100/json/info/")
 		if err != nil {
-			// обработка ошибки
+			log.Panic(err)
 		}
 
 		var info Info
@@ -27,10 +29,20 @@ func getData() {
 	}
 }
 
-
+func OpenFile() {
+	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatal("Failed to open log file:", err)
+	}
+	defer file.Close()
+	log.SetOutput(file)
+}
 
 
 func main() {
+	OpenFile()
+	//CreateMainTable()
+	InitDb()
 
 	go getData()
 
@@ -38,11 +50,9 @@ func main() {
 		json.NewEncoder(w).Encode(curretData)
 	})
 
-	//CreateMainTable()
-	initDb()
 
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil{
-		fmt.Println(err)
+		log.Panic(err)
 	}
 }
