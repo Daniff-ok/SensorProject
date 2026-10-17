@@ -3,13 +3,12 @@ package main
 import "time"
 
 type Info struct {
-	Data Data `json:"u"`
+	Data IncomingData `json:"u"`
 }
 
-type Data struct {
+type IncomingData struct {
 	Temp  []any `json:"Темепература"`
 	Humid []any `json:"Вологість"`
-	Time  time.Time
 }
 
 type DBdata struct {

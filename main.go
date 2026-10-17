@@ -2,14 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 	"log"
 	"os"
 )
-
-var curretData Data
 
 func getData() {
 	for {
@@ -21,10 +18,8 @@ func getData() {
 		var info Info
 		json.NewDecoder(resp.Body).Decode(&info)
 
-		info.Data.Time = time.Now()
-		fmt.Println(info.Data.Temp[0], info.Data.Humid[0], info.Data.Time)
-
-		curretData = info.Data
+		data := DBdata{info.Data.Temp[0].(float32), info.Data.Humid[0].(float32), time.Now()}
+		AddData(data)
 		time.Sleep(30 * time.Second)
 	}
 }
@@ -45,10 +40,6 @@ func main() {
 	InitDb()
 
 	go getData()
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode(curretData)
-	})
 
 
 	err := http.ListenAndServe(":3000", nil)
