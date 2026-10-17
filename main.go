@@ -1,11 +1,12 @@
 package main
 
 import (
-	//"encoding/json/v2"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
+	_ "github.com/mattn/go-sqlite3"
+	//"database/sql"
 )
 
 type Info struct{
@@ -18,19 +19,41 @@ type Data struct{
 	Time time.Time
 }
 
+var curretData Data
+
+func getData() {
+	for {
+		resp, err := http.Get("http://192.168.0.100/json/info/")
+		if err != nil {
+			// обработка ошибки
+		}
+
+		var info Info
+		json.NewDecoder(resp.Body).Decode(&info)
+
+		info.Data.Time = time.Now()
+		fmt.Println(info.Data.Temp[0], info.Data.Humid[0], info.Data.Time)
+
+		curretData = info.Data
+		time.Sleep(30 * time.Second)
+	}
+}
+
+
+
+
 func main() {
 
-	for {
-	resp, err := http.Get("http://192.168.0.100/json/info/")
-	if err != nil {
-    	// обработка ошибки
-	}
+	go getData()
 
-	var info Info
-	json.NewDecoder(resp.Body).Decode(&info)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(curretData)
+	})
 
-	info.Data.Time = time.Now()
-	fmt.Println(info.Data.Temp[0], info.Data.Humid[0], info.Data.Time)
-	time.Sleep(30 * time.Second)
+	CreateMainTable()
+
+	err := http.ListenAndServe(":3000", nil)
+	if err != nil{
+		fmt.Println(err)
 	}
 }
