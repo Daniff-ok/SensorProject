@@ -38,7 +38,8 @@ func main() {
 		json.NewEncoder(w).Encode(curretData)
 	})
 
-	CreateMainTable()
+	//CreateMainTable()
+	initDb()
 
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil{
