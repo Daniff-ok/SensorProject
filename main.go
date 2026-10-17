@@ -7,16 +7,6 @@ import (
 	"time"
 )
 
-type Info struct{
-	Data Data `json:"u"`
-}
-
-type Data struct{
-	Temp []any `json:"Темепература"`
-	Humid []any `json:"Вологість"`
-	Time time.Time
-}
-
 var curretData Data
 
 func getData() {
