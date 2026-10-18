@@ -18,3 +18,10 @@ type DBdata struct {
 	Humid float64   `json:"humid"`
 	Time  time.Time `json:"time"`
 }
+
+type SerialDBdata struct {
+	Lable string    `json:"label"`
+	Start time.Time `json:"start"`
+	Temp  float64   `json:"temp"`
+	Humid float64   `json:"humid"`
+}

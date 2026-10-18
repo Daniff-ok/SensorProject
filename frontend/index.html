@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Моніторинг температури та вологості</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__titles">
+      <h1>Моніторинг датчика</h1>
+      <p class="subtitle">Температура та вологість повітря</p>
+    </div>
+
+    <div class="topbar__status">
+      <span id="status-dot" class="dot dot--idle" aria-hidden="true"></span>
+      <span id="status-text" class="status-text">завантаження…</span>
+      <button id="refresh" class="btn" type="button">Оновити</button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <main class="grid">
+
+    <!-- ================= ТЕМПЕРАТУРА ================= -->
+    <section class="panel" data-metric="temp" aria-labelledby="temp-title">
+      <h2 class="panel__title" id="temp-title">
+        <span class="panel__icon panel__icon--temp" aria-hidden="true"></span>
+        Температура
+      </h2>
+
+      <!-- 1. актуальні дані -->
+      <div class="current">
+        <div class="current__value">
+          <span data-role="current">—</span><span class="current__unit">°C</span>
+        </div>
+        <div class="current__meta">
+          станом на <b data-role="current-time">—</b>
+        </div>
+      </div>
+
+      <!-- 2. гістограма за 24 години -->
+      <h3 class="block-title">За останні 24 години</h3>
+      <div class="chart" data-role="chart" role="img" aria-label="Гістограма температури за 24 години"></div>
+
+      <!-- 3. середні за тиждень -->
+      <h3 class="block-title">Середнє за тиждень</h3>
+      <ul class="week" data-role="week"></ul>
+    </section>
+
+    <!-- ================= ВОЛОГІСТЬ ================= -->
+    <section class="panel" data-metric="humid" aria-labelledby="humid-title">
+      <h2 class="panel__title" id="humid-title">
+        <span class="panel__icon panel__icon--humid" aria-hidden="true"></span>
+        Вологість
+      </h2>
+
+      <div class="current">
+        <div class="current__value">
+          <span data-role="current">—</span><span class="current__unit">%</span>
+        </div>
+        <div class="current__meta">
+          станом на <b data-role="current-time">—</b>
+        </div>
+      </div>
+
+      <h3 class="block-title">За останні 24 години</h3>
+      <div class="chart" data-role="chart" role="img" aria-label="Гістограма вологості за 24 години"></div>
+
+      <h3 class="block-title">Середнє за тиждень</h3>
+      <ul class="week" data-role="week"></ul>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>Дані оновлюються кожні 30&nbsp;хв</span>
+    <span id="api-info"></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
