@@ -12,7 +12,7 @@ func CreateMainTable() {
         panic(err)
     }
     defer db.Close()
-    _, err = db.Exec("CREATE TABLE sensor_data( temperature REAL , humidity TEXT, time TIMESTAMP PRIMARY KEY); ")
+    _, err = db.Exec("CREATE TABLE sensor_data( temperature REAL , humidity REAL, time TIMESTAMP PRIMARY KEY); ")
 
     if err != nil{
         panic(err)
