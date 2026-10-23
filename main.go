@@ -18,7 +18,6 @@ func getData() {
 	for {
 		resp, err := client.Get("http://192.168.0.100/json/info/")
 		if err != nil {
-			log.Println(err)
 			continue
 		}
 
