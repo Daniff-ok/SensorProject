@@ -113,7 +113,7 @@ func GetDailyData() []SerialDBdata {
 
 		if avgTemp.Valid != false{
 			d := SerialDBdata{
-				rowDate.Format("01-02"),
+				rowDate.Format("02-01"),
 				rowDate,
 				avgTemp.Float64,
 				avgHum.Float64}
