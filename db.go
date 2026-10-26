@@ -99,7 +99,7 @@ func GetDailyData() []SerialDBdata {
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 
 	data := []SerialDBdata{}
-	for i := 0; i >= -7; i-- {
+	for i := 0; i > -7; i-- {
 
 		rowDate := today.AddDate(0,0,i)
 
