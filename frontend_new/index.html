@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Особистий моніторинг температури та вологості: поточні виміри, історія за добу та тиждень.">
+  <title>Повітря: моніторинг кімнати</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="dashboard.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">До показників</a>
+  <header class="shell container">
+    <a class="wordmark" href="./" aria-label="Повітря, головна"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><path d="M3 10h16a4 4 0 1 0-4-4M3 15h22M3 20h11a4 4 0 1 1-4 4"/></svg>Повітря<span class="wordmark-sub">Особистий моніторинг</span></a>
+    <div class="shell-actions"><span id="connection" role="status">Підключення…</span><button class="button primary" id="refresh" type="button">Оновити дані</button></div>
+  </header>
+  <main id="main" class="container">
+    <div class="page-heading"><div><h1>Клімат у кімнаті</h1><p class="muted">Останній вимір і зміни, які варто помітити.</p></div><div class="source-control"><label for="source">Джерело</label><select id="source"><option value="live">Мій датчик</option><option value="demo">Демонстрація</option></select></div></div>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <section class="current-strip" aria-label="Останній вимір" aria-busy="true" id="current-region">
+      <article class="reading"><div class="reading-label"><h2>Температура</h2><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 14.5V5a3 3 0 0 1 6 0v9.5a5 5 0 1 1-6 0Z M12 8v10"/></svg></div><div class="reading-value"><span id="temp-value" class="measure skeleton">…</span><span class="unit">°C</span></div><p id="temp-advice" class="reading-advice">Очікуємо на вимір</p><div class="reading-footer"><span>Твій нижній поріг</span><span class="measure" id="temp-threshold">…</span></div></article>
+      <article class="reading"><div class="reading-label"><h2>Вологість</h2><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z M9 15a3 3 0 0 0 3 3"/></svg></div><div class="reading-value"><span id="humid-value" class="measure skeleton">…</span><span class="unit">%</span></div><p id="humid-advice" class="reading-advice">Очікуємо на вимір</p><div class="reading-footer"><span>Твій верхній поріг</span><span class="measure" id="humid-threshold">…</span></div></article>
+      <aside class="measurement-info"><span class="small muted">Час останнього виміру</span><time id="measured-at" class="measure">…</time><p id="freshness">Перевіряємо свіжість даних</p><div class="info-bottom"><span class="small muted">Інтервал запису</span><span class="measure">30 хв</span></div></aside>
+    </section>
+    <section class="history" aria-labelledby="history-heading">
+      <div class="section-heading"><div><h2 id="history-heading">Як змінюється повітря</h2><p id="period-caption" class="small muted">Окремі виміри за останні 24 години</p></div><div class="segmented" role="group" aria-label="Період історії"><button type="button" data-period="day" aria-pressed="true">24 години</button><button type="button" data-period="week" aria-pressed="false">7 днів</button></div></div>
+      <div class="charts"><article class="chart-panel"><div class="chart-heading"><h3><span class="series-key temperature" aria-hidden="true"></span>Температура, °C</h3><span id="temp-range" class="small measure muted">…</span></div><div id="temp-chart" class="chart-host" aria-busy="true"><p class="chart-state skeleton">Завантажуємо історію…</p></div><div id="temp-stats" class="chart-stats"></div></article><article class="chart-panel"><div class="chart-heading"><h3><span class="series-key humidity" aria-hidden="true"></span>Вологість, %</h3><span id="humid-range" class="small measure muted">…</span></div><div id="humid-chart" class="chart-host" aria-busy="true"><p class="chart-state skeleton">Завантажуємо історію…</p></div><div id="humid-stats" class="chart-stats"></div></article></div>
+      <p class="chart-note small muted">Час: Київ. Шкали графіків автоматичні; розрив означає відсутність вимірів.</p>
+      <details class="data-disclosure"><summary>Виміри у таблиці</summary><div id="history-table"></div></details>
+    </section>
+    <div class="bottom-grid"><section class="week-section" aria-labelledby="week-heading"><div class="section-heading"><div><h2 id="week-heading">Тиждень у цифрах</h2><p class="small muted">Середні за календарні дні</p></div><span id="week-range" class="small measure muted">…</span></div><div id="week-table" aria-busy="true"><p class="chart-state skeleton">Завантажуємо підсумок…</p></div><p class="small muted table-note">Сьогоднішній день ще триває. Пропущені дні показано без значень.</p></section>
+    <section class="preferences" aria-labelledby="preferences-heading"><h2 id="preferences-heading">Твої орієнтири</h2><p class="small muted">Межі для підказок, які ти обираєш сам.</p><form id="thresholds"><label for="min-temp">Опалення: температура нижче, °C</label><input id="min-temp" type="number" min="-30" max="50" step="0.5" placeholder="Наприклад, 19"><label for="max-humid">Провітрювання: вологість вище, %</label><input id="max-humid" type="number" min="1" max="100" step="1" placeholder="Наприклад, 65"><button class="button" type="submit">Зберегти межі</button><p id="settings-message" class="small muted" role="status">Зберігаються тільки в цьому браузері.</p></form><p class="small muted note">Вологість: лише один орієнтир для провітрювання. Датчик не вимірює CO₂.</p></section></div>
+  </main>
+  <footer class="container footer"><span>Повітря / температура та вологість</span><span>Перевірка API щохвилини</span></footer>
+  <noscript><p class="container notice">Увімкни JavaScript, щоб отримувати виміри з датчика.</p></noscript>
+</body>
+</html>

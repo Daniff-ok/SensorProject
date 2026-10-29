@@ -1,0 +1,23 @@
+{
+  "scanned": "2026-10-29",
+  "findings": {
+    "fonts": "frontend/styles.css:56 system UI; no locked brand",
+    "palette": "frontend/styles.css:5 light/dark tokens",
+    "framework": "frontend/index.html:1 vanilla HTML, main.go:59 Go static file server",
+    "api": "main.go:61-63 latest/hourly/daily; domain.go:16 JSON structs",
+    "collection": "main.go:40 interval 30 minutes"
+  },
+  "preserve": [
+    "backend unchanged",
+    "original frontend restored",
+    "existing API contracts",
+    "Ukrainian"
+  ],
+  "introduce": [
+    "frontend_new independent dashboard",
+    "Rim app theme",
+    "local thresholds",
+    "explicit demo",
+    "same-origin development proxy"
+  ]
+}

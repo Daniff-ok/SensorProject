@@ -1,0 +1,27 @@
+[
+ {
+  "scope": "app",
+  "shape": "app screen",
+  "theme": "rim",
+  "axes": "dark/grotesk-sans/warm",
+  "nav": "top bar",
+  "signature": "paired sensor timelines",
+  "imagery": "none, data interface",
+  "photos": [],
+  "entry": "frontend_new/index.html",
+  "fingerprint": "topbar/current-strip/paired-timelines/week-table/preferences",
+  "sections": [
+   "current readings",
+   "paired timelines",
+   "weekly table",
+   "personal thresholds"
+  ],
+  "waived": [],
+  "prompt": "Personal Ukrainian sensor dashboard for heating and ventilation decisions",
+  "hero": "none, app screen",
+  "footer": "colophon",
+  "verification": "Static lint clean; Firefox browser interaction checks; Chrome render unavailable",
+  "date": "2026-10-29",
+  "mode": "build"
+ }
+]
