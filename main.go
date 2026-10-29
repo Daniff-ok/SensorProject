@@ -11,26 +11,38 @@ import (
 
 var db *sql.DB
 
+func requestData(client *http.Client) (Info, error) {
+	resp, err := client.Get("http://192.168.0.100/json/info/")
+	if err != nil {
+		return Info{}, err
+	}
+	defer resp.Body.Close()
+
+	var info Info
+	err = json.NewDecoder(resp.Body).Decode(&info)
+	if err != nil {
+		log.Println(err)
+		return Info{}, err
+	}
+
+	return info, nil
+}
+
 func getData() {
 
 	client := &http.Client{Timeout: 10 * time.Second,}
 
 	for {
-		resp, err := client.Get("http://192.168.0.100/json/info/")
-		if err != nil {
-			continue
-		}
-
 		var info Info
-		err = json.NewDecoder(resp.Body).Decode(&info)
-		if err != nil {
-			log.Println(err)
+
+		info, err := requestData(client)
+		if err != nil{
+			time.Sleep(5 * time.Minute)
 			continue
 		}
 
 		data := DBdata{info.Data.Temp[0].(float64), info.Data.Humid[0].(float64), time.Now()}
 		AddData(data)
-		resp.Body.Close()
 		time.Sleep(30 * time.Minute)
 	}
 }
