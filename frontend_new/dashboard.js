@@ -134,19 +134,12 @@
       const d = new Date(start + (end - start) * i / 4);
       root.append(svg('text', { x: x(d), y: H - 8, 'text-anchor': i === 0 ? 'start' : i === 4 ? 'end' : 'middle', class: 'chart-axis' }, period === 'day' ? clock.format(d) : date.format(d)));
     }
-    let path = '', previous = null;
-    for (const row of rows) {
-      if (row[metric] === null) { previous = null; continue; }
-      const gap = !previous || (+row.time - +previous.time) > (period === 'day' ? 75 * 60000 : 36 * 3600000);
-      path += `${gap ? 'M' : 'L'}${x(row.time).toFixed(2)},${y(row[metric]).toFixed(2)} `;
-      previous = row;
-    }
+    // Join available readings even when the PC was off between measurements.
+    const path = valid.map((row, i) =>
+      `${i === 0 ? 'M' : 'L'}${x(row.time).toFixed(2)},${y(row[metric]).toFixed(2)}`
+    ).join(' ');
     root.append(svg('path', { d: path, class: `chart-line ${metric === 'humid' ? 'humid-line' : ''}` }));
-    const gapLimit = period === 'day' ? 75 * 60000 : 36 * 3600000;
-    const isolatedOrLast = rows.filter((r, i) => r[metric] !== null && (i === rows.length - 1 ||
-      (!rows[i - 1] || rows[i - 1][metric] === null || +r.time - +rows[i - 1].time > gapLimit) &&
-      (!rows[i + 1] || rows[i + 1][metric] === null || +rows[i + 1].time - +r.time > gapLimit)));
-    for (const row of isolatedOrLast) {
+    for (const row of [valid.at(-1)]) {
       const point = svg('circle', { cx: x(row.time), cy: y(row[metric]), r: 3, class: `chart-point ${metric === 'humid' ? 'humid-point' : ''}` });
       point.append(svg('title', {}, `${stamp.format(row.time)}: ${fmt(row[metric])} ${unit}`)); root.append(point);
     }

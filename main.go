@@ -56,7 +56,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("/", http.FileServer(http.Dir("./frontend")))
+	mux.Handle("/", http.FileServer(http.Dir("./frontend_new")))
 
 	mux.HandleFunc("GET /api/latest", GetLatest)
 	mux.HandleFunc("GET /api/hourly", GetHourly)
